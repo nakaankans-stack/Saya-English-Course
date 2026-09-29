@@ -2,168 +2,375 @@
 <html lang="kk">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Saya English Course</title>
   <style>
-    :root {
-      --bg-color: #E3F0F7;
-      --primary-color: #197CAE;
-      --card-bg: #FFFFFF;
-      --text-color: #2D3748;
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    body { background-color: #f8fafc; color: #1e293b; display: flex; min-height: 100vh; }
+
+    /* Sidebar Navigation */
+    .sidebar {
+      width: 250px;
+      background: #ffffff;
+      border-right: 1px solid #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      height: 100vh;
+      z-index: 10;
+    }
+    .brand {
+      padding: 20px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #0284c7;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .nav-menu {
+      list-style: none;
+      padding: 15px 10px;
+      overflow-y: auto;
+      flex: 1;
+    }
+    .nav-item {
+      padding: 12px 16px;
+      margin-bottom: 4px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      color: #475569;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.2s;
+    }
+    .nav-item:hover, .nav-item.active {
+      background: #e0f2fe;
+      color: #0284c7;
+      font-weight: 600;
     }
 
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-color);
+    /* Main Container Area */
+    .main-wrapper {
+      margin-left: 250px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
     }
 
-    /* Header & Welcome Banner */
-    header {
-      background-color: var(--card-bg);
-      padding: 20px 40px;
+    /* Top Stats Bar */
+    .top-header {
+      background: #ffffff;
+      padding: 15px 30px;
+      border-bottom: 1px solid #e2e8f0;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      position: sticky;
+      top: 0;
+      z-index: 5;
     }
-
-    .user-stats {
+    .user-badge-group {
       display: flex;
-      gap: 20px;
-      font-weight: bold;
+      gap: 12px;
+    }
+    .badge-stat {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .stat-streak { background: #fff7ed; color: #ea580c; border: 1px solid #ffedd5; }
+    .stat-xp { background: #f0fdf4; color: #16a34a; border: 1px solid #dcfce7; }
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .avatar {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      background: #0284c7;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    .badge {
-      background: var(--bg-color);
+    /* Content Display Sections */
+    .content-area { padding: 30px; max-width: 1000px; }
+    .section-block { display: none; }
+    .section-block.active { display: block; }
+
+    .page-title { font-size: 22px; font-weight: 700; color: #0f172a; margin-bottom: 20px; }
+
+    /* Topic Tabs Header */
+    .topic-selector {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .topic-btn {
       padding: 8px 16px;
       border-radius: 20px;
-      color: var(--primary-color);
-    }
-
-    /* Navigation Grid */
-    .dashboard {
-      max-width: 1100px;
-      margin: 40px auto;
-      padding: 0 20px;
-    }
-
-    .grid-menu {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
-    }
-
-    .nav-card {
-      background-color: var(--card-bg);
-      border-radius: 12px;
-      padding: 24px;
-      text-align: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-      transition: transform 0.2s;
-    }
-
-    .nav-card:hover {
-      transform: translateY(-4px);
-    }
-
-    .btn-main {
-      background-color: var(--primary-color);
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      background: #ffffff;
+      font-size: 13px;
+      font-weight: 500;
       cursor: pointer;
-      font-weight: 600;
-      margin-top: 12px;
-      width: 100%;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .topic-btn.active, .topic-btn:hover {
+      background: #0284c7;
+      color: #ffffff;
+      border-color: #0284c7;
     }
 
-    /* Vocabulary Trainer Modal/Box (Видеодағыдай стиль) */
-    .trainer-card {
-      background: #FFF;
-      border-radius: 16px;
-      padding: 30px;
-      max-width: 450px;
-      margin: 30px auto;
-      text-align: center;
-      border: 2px solid #E2E8F0;
+    /* Cards & Quiz Boxes */
+    .quiz-card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 20px;
+      border: 1px solid #e2e8f0;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     }
-
-    .input-box {
-      width: 90%;
-      padding: 12px;
-      border: 2px solid var(--primary-color);
+    .quiz-title { font-size: 15px; font-weight: 600; color: #1e293b; margin-bottom: 12px; }
+    .quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .option-btn {
+      padding: 10px 14px;
+      border: 1px solid #cbd5e1;
       border-radius: 8px;
-      font-size: 16px;
-      margin-top: 15px;
-      outline: none;
+      background: #f8fafc;
+      font-size: 14px;
+      cursor: pointer;
+      text-align: left;
     }
+    .option-btn:hover { background: #e0f2fe; border-color: #38bdf8; }
+
+    /* Vocab Card List */
+    .vocab-card {
+      background: #ffffff;
+      padding: 16px 20px;
+      border-radius: 10px;
+      border: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .vocab-word { font-weight: 600; font-size: 16px; }
+    .vocab-trans { color: #64748b; font-size: 14px; }
   </style>
 </head>
 <body>
 
-  <header>
-    <h2>Saya English Course</h2>
-    <div class="user-stats">
-      <div class="badge" id="user-greeting">Hello, Student!</div>
-      <div class="badge">🔥 Streak: <span id="streak-count">5</span> days</div>
-      <div class="badge">📊 Score: <span id="user-score">120</span> pts</div>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="brand">
+      <span> Saya English</span>
     </div>
-  </header>
+    <ul class="nav-menu">
+      <li class="nav-item" onclick="switchTab('dashboard', this)">Dashboard</li>
+      <li class="nav-item active" onclick="switchTab('grammar', this)">Grammar</li>
+      <li class="nav-item" onclick="switchTab('vocabulary', this)">Vocabulary</li>
+      <li class="nav-item" onclick="switchTab('vocab-test', this)">Vocabulary Test</li>
+      <li class="nav-item" onclick="switchTab('materials', this)">Materials</li>
+      <li class="nav-item" onclick="switchTab('listening', this)">Listening</li>
+      <li class="nav-item" onclick="switchTab('reading', this)">Reading</li>
+      <li class="nav-item" onclick="switchTab('shadowing', this)">Shadowing</li>
+      <li class="nav-item" onclick="switchTab('flex', this)">FLEX Mini Course</li>
+      <li class="nav-item" onclick="switchTab('aicoach', this)">AI Coach</li>
+      <li class="nav-item" onclick="switchTab('rating', this)">Rating</li>
+    </ul>
+  </aside>
 
-  <div class="dashboard">
-    <h3>Курс бөлімдері</h3>
-    <div class="grid-menu">
-      <div class="nav-card"><h4>1. Grammar</h4><button class="btn-main">Бастау</button></div>
-      <div class="nav-card"><h4>2. Vocabulary</h4><button class="btn-main">Ашу</button></div>
-      <div class="nav-card"><h4>3. Vocab Test</h4><button class="btn-main" onclick="openVocabTest()">Тест тапсыру</button></div>
-      <div class="nav-card"><h4>4. Materials</h4><button class="btn-main">PDF Файлдар</button></div>
-      <div class="nav-card"><h4>5. Listening</h4><button class="btn-main">Практика</button></div>
-      <div class="nav-card"><h4>6. Reading</h4><button class="btn-main">Мәтіндер</button></div>
-      <div class="nav-card"><h4>7. Shadowing</h4><button class="btn-main">Видеолар</button></div>
-      <div class="nav-card"><h4>8. FLEX Mini Course</h4><button class="btn-main">Кіру</button></div>
-      <div class="nav-card"><h4>9. AI Coach</h4><button class="btn-main">Сөйлесу</button></div>
-      <div class="nav-card"><h4>10. Rating</h4><button class="btn-main">Көру</button></div>
-    </div>
+  <!-- Main Content Wrapper -->
+  <div class="main-wrapper">
+    <!-- Top Stats -->
+    <header class="top-header">
+      <div class="user-badge-group">
+        <div class="badge-stat stat-streak">🔥 1 days</div>
+        <div class="badge-stat stat-xp">⭐ 95 XP</div>
+      </div>
+      <div class="user-profile">
+        <span>Сая</span>
+        <div class="avatar">C</div>
+      </div>
+    </header>
 
-    <!-- Видеодағыдай Vocabulary Test тренажеры -->
-    <div class="trainer-card" id="vocab-section" style="display:none;">
-      <span style="color: var(--primary-color); font-weight: bold;">STAGE 4/5 • LISTEN AND TYPE</span>
-      <h3 style="margin-top:15px;">Listen and type the word</h3>
-      <button class="btn-main" style="width: auto;" onclick="playAudio()">🔊 Дыбысты тыңдау</button>
-      <br>
-      <input type="text" id="answer-input" class="input-box" placeholder="type the word...">
-      <button class="btn-main" onclick="checkAnswer()">Check</button>
-      <p id="feedback" style="font-weight:bold; margin-top:10px;"></p>
+    <div class="content-area">
+
+      <!-- GRAMMAR SECTION (Тесттер) -->
+      <section id="grammar" class="section-block active">
+        <h2 class="page-title">Grammar Tests</h2>
+        
+        <!-- Грамматика тақырыптарының фильтрі -->
+        <div class="topic-selector" id="grammar-topics"></div>
+
+        <div class="quiz-card">
+          <div class="quiz-title">1. Бос орынды толтырыңыз (Fill in the blanks)</div>
+          <p style="margin-bottom: 15px; color: #475569;">She _____ to Astana last month with her family.</p>
+          <div class="quiz-options">
+            <button class="option-btn">A) go</button>
+            <button class="option-btn">B) went</button>
+            <button class="option-btn">C) has gone</button>
+            <button class="option-btn">D) goes</button>
+          </div>
+        </div>
+
+        <div class="quiz-card">
+          <div class="quiz-title">2. Дұрыс нұсқаны таңдаңыз (Multiple Choice Quiz)</div>
+          <p style="margin-bottom: 15px; color: #475569;">"If it rains tomorrow, we _____ the picnic in the park."</p>
+          <div class="quiz-options">
+            <button class="option-btn">A) would cancel</button>
+            <button class="option-btn">B) will cancel</button>
+            <button class="option-btn">C) canceled</button>
+            <button class="option-btn">D) will have canceled</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- VOCABULARY SECTION -->
+      <section id="vocabulary" class="section-block">
+        <h2 class="page-title">Vocabulary Topics</h2>
+        
+        <!-- Сөздік тақырыптарының фильтрі -->
+        <div class="topic-selector" id="vocab-topics"></div>
+
+        <div id="vocab-list">
+          <div class="vocab-card">
+            <div>
+              <div class="vocab-word">gratitude</div>
+              <div class="vocab-trans">Ризашылық, алғыс</div>
+            </div>
+            <button style="padding: 6px 12px; background:#e0f2fe; color:#0284c7; border:none; border-radius:6px; cursor:pointer;">Меңгерілді</button>
+          </div>
+          <div class="vocab-card">
+            <div>
+              <div class="vocab-word">sustainability</div>
+              <div class="vocab-trans">Тұрақты даму, экологиялық тепе-теңдік</div>
+            </div>
+            <button style="padding: 6px 12px; background:#fff7ed; color:#ea580c; border:none; border-radius:6px; cursor:pointer;">Қайталауда</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- VOCABULARY TEST SECTION -->
+      <section id="vocab-test" class="section-block">
+        <h2 class="page-title">Vocabulary Test</h2>
+        <div class="quiz-card">
+          <div class="quiz-title">Сөздің аудармасын тап: "gratitude"</div>
+          <div class="quiz-options">
+            <button class="option-btn">A) Тұрақтылық</button>
+            <button class="option-btn">B) Алғыс, ризашылық</button>
+            <button class="option-btn">C) Қоршаған орта</button>
+            <button class="option-btn">D) Сапар</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- БАСҚА БӨЛІМДЕРДІҢ УАҚЫТША БЛОГЫ -->
+      <section id="other-section" class="section-block">
+        <h2 class="page-title" id="other-title">Бөлім</h2>
+        <p>Бұл бөлімнің тапсырмалары мен материалдары жүктелуде...</p>
+      </section>
+
     </div>
   </div>
 
   <script>
-    function openVocabTest() {
-      document.getElementById('vocab-section').style.display = 'block';
+    // 86 Грамматикалық тақырыптар тізімі
+    const grammarTopicsList = [
+      "Alphabet", "Syllable", "To be", "Present simple", "Present continuous", 
+      "Present simple VS continuous", "Have /has +got", "Telling the time", "Was/were", 
+      "Past simple", "Past continuous", "Past simple VS continuous", "Present perfect 1", 
+      "Present perfect 2", "Present perfect 3", "Present perfect 4", "For since ago", 
+      "Present perfect VS past simple", "Passive 1", "Passive 2", "Ving + future", 
+      "Be going to", "Future simple", "Will/shall", "May/ might", "Can / could", 
+      "Must / don’t need to", "Should", "Have to", "Would", "Do it", "Used to", 
+      "There is/are", "There was/were", "There has/have been / will be", "Zero conditional", 
+      "First conditional", "First conditional with imperative", "Second conditional", 
+      "If I were you", "1 or 2 conditional", "It", "I’m / I don’t", "Have/are/don’t you?", 
+      "Too/either", "Questions 1", "Questions 2", "Questions 3", "Questions 4", 
+      "Questions 5", "Questions 6", "Reported speech", "Infinitive", "To and -ing", 
+      "Complex object", "Infinitive of purpose", "Verb GO", "Verb GET", "Do and make", 
+      "Have", "Subject / object", "My / his / their", "Mine / your / hers", 
+      "I / me / my / mine", "Myself / yourself", "'s (Saya's)", "A/an", "Singular / plural", 
+      "Countable / uncountable 1", "Countable / uncountable 2", "A/an and the", "The 1", 
+      "The 2", "The 3", "This / that / these / those", "One / ones", "Some / any", 
+      "Not + any / none", "NOT + anybody / nobody", "Every or all", "All / most / some", 
+      "Both / either / neither", "A lot of / much / many", "(A) little / (A) few", "Adjectives"
+    ];
+
+    // 60 Сөздік тақырыптар тізімі
+    const vocabTopicsList = [
+      "The family", "Birth, marriage and death", "Parts of the body", "Clothes", 
+      "Describing people", "Health and illness", "Feelings", "Greetings and wishes", 
+      "Useful words", "Food and drink", "In the kitchen", "In the bedroom/bathroom", 
+      "In the living room", "Jobs", "At school and university", "Communications", 
+      "Your phone", "Holidays", "Shops and shopping", "Online shopping", "In a hotel", 
+      "Eating out", "Sports", "Cinema", "Free time at home", "Music & instruments", 
+      "Countries & nationalities", "Weather", "In the town", "In the countryside", 
+      "Animals", "Travelling", "UK culture", "Crime", "The media", "Problems at home/work", 
+      "Global problems", "Have / had / had", "Go / went / gone", "Do / did / done", 
+      "Make / made / made", "Come / came / come", "Take / took / taken", 
+      "Bring / brought / brought", "Get / got / got", "Phrasal verbs", "Everyday things", 
+      "Talking say, tell, ask", "Moving", "Conjunctions", "Days, months, seasons", 
+      "Time words", "Places", "Manner", "Common uncountable nouns", "Common adjectives", 
+      "Words and prepositions", "Prefixes", "Suffixes", "Words you may confuse"
+    ];
+
+    // Тақырыптарды экранға батырма түрінде шығару
+    function loadTopics() {
+      const gContainer = document.getElementById('grammar-topics');
+      grammarTopicsList.forEach((t, idx) => {
+        const btn = document.createElement('button');
+        btn.className = `topic-btn ${idx === 0 ? 'active' : ''}`;
+        btn.innerText = `${idx+1}. ${t}`;
+        gContainer.appendChild(btn);
+      });
+
+      const vContainer = document.getElementById('vocab-topics');
+      vocabTopicsList.forEach((t, idx) => {
+        const btn = document.createElement('button');
+        btn.className = `topic-btn ${idx === 0 ? 'active' : ''}`;
+        btn.innerText = `${idx+1}. ${t}`;
+        vContainer.appendChild(btn);
+      });
     }
 
-    function playAudio() {
-      // Аудио ойнату функциясы
-      const msg = new SpeechSynthesisUtterance('Eccentric');
-      msg.lang = 'en-US';
-      window.speechSynthesis.speak(msg);
-    }
+    // Бөлімдерді ауыстыру
+    function switchTab(tabId, element) {
+      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+      element.classList.add('active');
 
-    function checkAnswer() {
-      const input = document.getElementById('answer-input').value.trim().toLowerCase();
-      const feedback = document.getElementById('feedback');
-      
-      // Видеодағыдай балама нұсқаларды тексеру (eccentric / odd / weird)
-      if(input === 'eccentric' || input === 'odd' || input === 'weird') {
-        feedback.style.color = 'green';
-        feedback.innerText = 'Correct! ✅';
+      document.querySelectorAll('.section-block').forEach(s => s.classList.remove('active'));
+
+      if (document.getElementById(tabId)) {
+        document.getElementById(tabId).classList.add('active');
       } else {
-        feedback.style.color = 'red';
-        feedback.innerText = 'Incorrect, try again! ❌';
+        document.getElementById('other-section').classList.add('active');
+        document.getElementById('other-title').innerText = element.innerText;
       }
     }
+
+    window.onload = loadTopics;
   </script>
 </body>
 </html>
